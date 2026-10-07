@@ -6,13 +6,16 @@
 import CoreAI
 import CoreAIShared
 
-/// Classification of a model state's lifecycle behavior.
+/// Classification of a model state's lifecycle behavior across supported architectures:
+/// - KV-Cache (dynamic growth, causal mask)
+/// - Sliding-Window attention (fixed size cache, causal mask)
+/// - Linear attention / recurrent / conv (fixed state, full reset only)
 public enum StateKind: String, Codable, Sendable {
-    /// KV cache — grows dynamically with context, supports truncation (causal mask).
+    /// KV-Cache — grows dynamically with context, supports truncation (causal mask).
     case kvCache = "kv_cache"
-    /// Sliding window cache — fixed size, supports truncation (causal mask).
+    /// Sliding-Window attention cache — fixed size, supports truncation (causal mask).
     case slidingCache = "sliding_cache"
-    /// Fixed state (conv, recurrent) — fixed size, does NOT support truncation.
+    /// Linear attention / fixed state (conv, recurrent) — fixed size, does NOT support truncation.
     case fixed
 }
 
